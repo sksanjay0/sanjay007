@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Microblogging App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #4a90e2;
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    main {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    #login-form, #register-form, #user-dashboard {
+      margin-bottom: 2rem;
+    }
+    h2 {
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+      border-bottom: 2px solid #4a90e2;
+      padding-bottom: 0.5rem;
+    }
+    input, textarea, button {
+      display: block;
+      width: 100%;
+      margin: 0.5rem 0;
+      padding: 0.8rem;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+    }
+    input:focus, textarea:focus, button:focus {
+      border-color: #4a90e2;
+      outline: none;
+    }
+    textarea {
+      height: 150px;
+      resize: vertical;
+    }
+    button {
+      background-color: #4a90e2;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #357abd;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      border: 1px solid #ddd;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+    }
+    li p {
+      margin: 0;
+    }
+    .like-btn, .dislike-btn, .comment-btn {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .like-btn:hover, .dislike-btn:hover, .comment-btn:hover {
+      background-color: #0056b3;
+    }
+    .like-count, .dislike-count {
+      font-size: 0.9rem;
+      margin-left: 0.5rem;
+      color: #666;
+    }
+    .comments-section {
+      margin-top: 1rem;
+    }
+    .comment {
+      margin-left: 1rem;
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      background-color: #f1f1f1;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+    }
+    .emoji-picker {
+      display: inline-block;
+      margin-left: 0.5rem;
+      cursor: pointer;
+    }
+    .emoji-picker span {
+      font-size: 1.5rem;
+      margin: 0 2px;
+    }
+    .total-likes, .total-comments {
+      font-weight: bold;
+      margin: 1rem 0;
+    }
+    @media (max-width: 600px) {
+      main {
+        padding: 1rem;
+      }
+      textarea {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>𝖇𝖑𝖔𝖌𝖌𝖊𝖗</h1>
+  </header>
+  <main>
+    <!-- Registration Form -->
+    <div id="register-form">
+      <h2>Register</h2>
+      <input type="text" id="register-username" placeholder="Choose a username">
+      <input type="password" id="register-password" placeholder="Choose a password">
+      <button id="register-btn">Register</button>
+    </div>
+
+    <!-- Login Form -->
+    <div id="login-form">
+      <h2>Login</h2>
+      <input type="text" id="login-username" placeholder="Username">
+      <input type="password" id="login-password" placeholder="Password">
+      <button id="login-btn">Login</button>
+    </div>
+
+    <!-- User Dashboard -->
+    <div id="user-dashboard" style="display: none;">
+      <h2>Welcome, <span id="user-username"></span>!</h2>
+      <textarea id="post-content" placeholder="Write your post..."></textarea>
+      <button id="post-btn">Post</button>
+
+      <!-- Follow Section -->
+      <div id="followers-section">
+        <h2>Follow Users</h2>
+        <input type="text" id="follow-username" placeholder="Username to follow">
+        <button id="follow-btn">Follow</button>
+      </div>
+      <div class="total-likes">Total Likes: <span id="total-likes-count">0</span></div>
+      <div class="total-comments">Total Comments: <span id="total-comments-count">0</span></div>
+    </div>
+
+    <!-- Feed -->
+    <div id="feed">
+      <h2>Feed</h2>
+      <ul id="post-list"></ul>
+    </div>
+  </main>
+  
+  <script>
+    const registerForm = document.getElementById('register-form');
+    const registerUsernameInput = document.getElementById('register-username');
+    const registerPasswordInput = document.getElementById('register-password');
+    const registerButton = document.getElementById('register-btn');
+
+    const loginForm = document.getElementById('login-form');
+    const loginUsernameInput = document.getElementById('login-username');
+    const loginPasswordInput = document.getElementById('login-password');
+    const loginButton = document.getElementById('login-btn');
+
+    const userDashboard = document.getElementById('user-dashboard');
+    const userUsername = document.getElementById('user-username');
+    const postContent = document.getElementById('post-content');
+    const postButton = document.getElementById('post-btn');
+
+    const followUsernameInput = document.getElementById('follow-username');
+    const followButton = document.getElementById('follow-btn');
+
+    const postList = document.getElementById('post-list');
+    const totalLikesCount = document.getElementById('total-likes-count');
+    const totalCommentsCount = document.getElementById('total-comments-count');
+
+    let currentUser = null;
+
+    // Helper function to get current user data
+    function getCurrentUser() {
+      return JSON.parse(localStorage.getItem('currentUser')) || null;
+    }
+
+    // Helper function to set current user data
+    function setCurrentUser(user) {
+      localStorage.setItem('currentUser', JSON.stringify(user));
+    }
+
+    // Register new user
+    registerButton.addEventListener('click', () => {
+      const username = registerUsernameInput.value.trim();
+      const password = registerPasswordInput.value.trim();
+      if (username && password) {
+        let users = JSON.parse(localStorage.getItem('users')) || {};
+        if (!users[username]) {
+          users[username] = { password, posts: [], following: [] };
+          localStorage.setItem('users', JSON.stringify(users));
+          alert('Registration successful!');
+          registerUsernameInput.value = '';
+          registerPasswordInput.value = '';
+        } else {
+          alert('Username already exists.');
+        }
+      }
+    });
+
+    // Login user
+    loginButton.addEventListener('click', () => {
+      const username = loginUsernameInput.value.trim();
+      const password = loginPasswordInput.value.trim();
+      let users = JSON.parse(localStorage.getItem('users')) || {};
+      if (users[username] && users[username].password === password) {
+        currentUser = username;
+        setCurrentUser(currentUser);
+        loginForm.style.display = 'none';
+        userDashboard.style.display = 'block';
+        userUsername.textContent = username;
+        loadPosts();
+      } else {
+        alert('Invalid username or password.');
+      }
+    });
+
+    // Follow a user
+    followButton.addEventListener('click', () => {
+      const followUsername = followUsernameInput.value.trim();
+      let users = JSON.parse(localStorage.getItem('users')) || {};
+      if (currentUser && users[followUsername] && followUsername !== currentUser) {
+        if (!users[currentUser].following.includes(followUsername)) {
+          users[currentUser].following.push(followUsername);
+          localStorage.setItem('users', JSON.stringify(users));
+          followUsernameInput.value = '';
+        } else {
+          alert('Already following this user.');
+        }
+      } else {
+        alert('Invalid username or you cannot follow yourself.');
+      }
+    });
+
+    // Post content
+    postButton.addEventListener('click', () => {
+      const content = postContent.value.trim();
+      if (content) {
+        let users = JSON.parse(localStorage.getItem('users')) || {};
+        if (users[currentUser]) {
+          const post = {
+            id: Date.now().toString(),
+            username: currentUser,
+            content: content,
+            date: new Date().toLocaleString(),
+            likedBy: [],
+            dislikedBy: [],
+            comments: []
+          };
+          users[currentUser].posts.push(post);
+          localStorage.setItem('users', JSON.stringify(users));
+          postContent.value = '';
+          loadPosts();
+        }
+      }
+    });
+
+    // Load posts
+    function loadPosts() {
+      postList.innerHTML = '';
+      let users = JSON.parse(localStorage.getItem('users')) || {};
+      let totalLikes = 0;
+      let totalComments = 0;
+      if (currentUser) {
+        let following = users[currentUser].following;
+        following.push(currentUser);
+
+        following.forEach(user => {
+          if (users[user]) {
+            users[user].posts.forEach((post, index) => {
+              const postItem = document.createElement('li');
+              postItem.innerHTML = 
+                `<p><strong>${post.username}</strong>: ${post.content}</p>
+                 <p><em>${post.date}</em></p>
+                <div>
+                  <button class="like-btn" data-index="${index}" data-user="${user}">Like</button>
+                  <span class="like-count">${post.likedBy.length} likes</span>
+                  <button class="dislike-btn" data-index="${index}" data-user="${user}">Dislike</button>
+                  <span class="dislike-count">${post.dislikedBy.length} dislikes</span>
+                </div>
+                <div class="comments-section">
+                  <h4>Comments</h4>
+                  <input type="text" class="comment-input" placeholder="Write a comment...">
+                  <button class="comment-btn" data-index="${index}" data-user="${user}">Comment</button>
+                  <div class="emoji-picker">
+                    <span class="emoji" data-emoji="😊">😊</span>
+                    <span class="emoji" data-emoji="😂">😂</span>
+                    <span class="emoji" data-emoji="❤️">❤️</span>
+                    <span class="emoji" data-emoji="😢">😢</span>
+                    <span class="emoji" data-emoji="😡">😡</span>
+                  </div>
+                  <ul class="comment-list"></ul>
+                </div>`;
+              postList.appendChild(postItem);
+              loadComments(postItem.querySelector('.comment-list'), post);
+
+              // Attach event listeners for comment buttons
+              postItem.querySelector('.comment-btn').addEventListener('click', (event) => {
+                const commentInput = postItem.querySelector('.comment-input');
+                const comment = commentInput.value.trim();
+                if (comment) {
+                  addComment(user, index, comment);
+                  commentInput.value = '';
+                }
+              });
+
+              // Attach event listeners for emojis
+              const emojiPicker = postItem.querySelector('.emoji-picker');
+              emojiPicker.querySelectorAll('.emoji').forEach(emoji => {
+                emoji.addEventListener('click', () => {
+                  const commentInput = postItem.querySelector('.comment-input');
+                  commentInput.value += emoji.getAttribute('data-emoji');
+                });
+              });
+
+              totalLikes += post.likedBy.length;
+              totalComments += post.comments.length;
+            });
+          }
+        });
+
+        totalLikesCount.textContent = totalLikes;
+        totalCommentsCount.textContent = totalComments;
+
+        document.querySelectorAll('.like-btn').forEach(button => {
+          button.addEventListener('click', (event) => {
+            const index = event.target.getAttribute('data-index');
+            const user = event.target.getAttribute('data-user');
+            likePost(user, index);
+          });
+        });
+
+        document.querySelectorAll('.dislike-btn').forEach(button => {
+          button.addEventListener('click', (event) => {
+            const index = event.target.getAttribute('data-index');
+            const user = event.target.getAttribute('data-user');
+            dislikePost(user, index);
+          });
+        });
+      }
+    }
+
+    // Load comments for a post
+    function loadComments(commentList, post) {
+      commentList.innerHTML = '';
+      post.comments.forEach(comment => {
+        const commentItem = document.createElement('li');
+        commentItem.classList.add('comment');
+        commentItem.textContent = comment;
+        commentList.appendChild(commentItem);
+      });
+    }
+
+    // Add comment to a post
+    function addComment(user, index, comment) {
+      let users = JSON.parse(localStorage.getItem('users')) || {};
+      if (users[user]) {
+        const post = users[user].posts[index];
+        post.comments.push(comment);
+        localStorage.setItem('users', JSON.stringify(users));
+        loadPosts();
+      }
+    }
+
+    // Increment likes count for a post
+    function likePost(user, index) {
+      let users = JSON.parse(localStorage.getItem('users')) || {};
+      if (users[user]) {
+        const post = users[user].posts[index];
+        const currentUserIndex = post.likedBy.indexOf(currentUser);
+        if (currentUserIndex === -1) {
+          post.likedBy.push(currentUser);
+        } else {
+          post.likedBy.splice(currentUserIndex, 1);
+        }
+        localStorage.setItem('users', JSON.stringify(users));
+        loadPosts();
+      }
+    }
+
+    // Increment dislikes count for a post
+    function dislikePost(user, index) {
+      let users = JSON.parse(localStorage.getItem('users')) || {};
+      if (users[user]) {
+        const post = users[user].posts[index];
+        const currentUserIndex = post.dislikedBy.indexOf(currentUser);
+        if (currentUserIndex === -1) {
+          post.dislikedBy.push(currentUser);
+        } else {
+          post.dislikedBy.splice(currentUserIndex, 1);
+        }
+        localStorage.setItem('users', JSON.stringify(users));
+        loadPosts();
+      }
+    }
+
+    // Initial setup
+    if (localStorage.getItem('users') === null) {
+      localStorage.setItem('users', JSON.stringify({}));
+    }
+  </script>
+</body>
+</html>
