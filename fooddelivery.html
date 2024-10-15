@@ -182,7 +182,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("checkout-button").addEventListener("click", () => {
         const address = addressInput.value;
         if (address) {
-            alert(`Thank you for your order! Total: ₹{total.toFixed(2)}\nDelivery Address: ₹{address}`);
+            alert(`Thank you for your order! Total: ₹₹{total.toFixed(2)}\nDelivery Address: ₹{address}`);
             cartItems.innerHTML = "";
             total = 0;
             totalDisplay.textContent = `Total: ₹0.00`;
