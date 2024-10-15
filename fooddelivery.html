@@ -60,6 +60,14 @@ input.quantity {
     border-radius: 5px; /* Rounded corners */
 }
 
+input.address {
+    width: 100%;
+    margin-top: 10px;
+    padding: 8px;
+    border: 1px solid #6c757d; /* Darker gray border */
+    border-radius: 5px; /* Rounded corners */
+}
+
 button {
     padding: 8px 12px;
     cursor: pointer;
@@ -92,7 +100,6 @@ button:hover {
     font-size: 1.2em; /* Slightly larger font size */
     color: #dc3545; /* Bootstrap danger color for emphasis */
 }
-
 </style>
 <body>
     <header>
@@ -120,19 +127,19 @@ button:hover {
                 <button class="add-button">Add to Cart</button>
             </div>
             <div class="food-item">
-                <img src=https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6iY5e0G6cWFIFK8U4nZBatA_exEcZ3NU9Ew&salt="Sushi" class="food-image">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6iY5e0G6cWFIFK8U4nZBatA_exEcZ3NU9Ew" alt="Sushi" class="food-image">
                 <h3>Sushi - $12.00</h3>
                 <input type="number" class="quantity" min="0" value="0">
                 <button class="add-button">Add to Cart</button>
             </div>
             <div class="food-item">
-                <img src=https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIzs1SU-LFa0rX5q5zZDN4B40Ef7xcGyA6Cw&s alt="Tacos" class="food-image">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIzs1SU-LFa0rX5q5zZDN4B40Ef7xcGyA6Cw" alt="Tacos" class="food-image">
                 <h3>Tacos - $7.00</h3>
                 <input type="number" class="quantity" min="0" value="0">
                 <button class="add-button">Add to Cart</button>
             </div>
             <div class="food-item">
-                <img src=https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJVGbI4pBbCqLyqDe64U1LGqBn9lP6aRMeaQ&s alt="Ice Cream" class="food-image">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJVGbI4pBbCqLyqDe64U1LGqBn9lP6aRMeaQ" alt="Ice Cream" class="food-image">
                 <h3>Ice Cream - $3.00</h3>
                 <input type="number" class="quantity" min="0" value="0">
                 <button class="add-button">Add to Cart</button>
@@ -142,6 +149,7 @@ button:hover {
             <h2>Cart</h2>
             <ul id="cart-items"></ul>
             <p id="total">Total: $0.00</p>
+            <input type="text" class="address" placeholder="Enter delivery address" id="address-input" required>
             <button id="checkout-button">Checkout</button>
         </div>
     </main>
@@ -149,6 +157,7 @@ button:hover {
 document.addEventListener("DOMContentLoaded", () => {
     const cartItems = document.getElementById("cart-items");
     const totalDisplay = document.getElementById("total");
+    const addressInput = document.getElementById("address-input");
     let total = 0;
 
     document.querySelectorAll(".add-button").forEach(button => {
@@ -171,10 +180,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     document.getElementById("checkout-button").addEventListener("click", () => {
-        alert(`Thank you for your order! Total: $${total.toFixed(2)}`);
-        cartItems.innerHTML = "";
-        total = 0;
-        totalDisplay.textContent = `Total: $0.00`;
+        const address = addressInput.value;
+        if (address) {
+            alert(`Thank you for your order! Total: $${total.toFixed(2)}\nDelivery Address: ${address}`);
+            cartItems.innerHTML = "";
+            total = 0;
+            totalDisplay.textContent = `Total: $0.00`;
+            addressInput.value = ""; // Reset address input
+        } else {
+            alert("Please enter a delivery address.");
+        }
     });
 });
 </script>
