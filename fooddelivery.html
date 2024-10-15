@@ -110,37 +110,37 @@ button:hover {
             <h2>Menu</h2>
             <div class="food-item">
                 <img src="https://img.freepik.com/free-photo/delicious-burger-with-fresh-ingredients_23-2150857908.jpg" alt="Burger" class="food-image">
-                <h3>Burger - ₹299.00</h3>
+                <h3>Burger - $5.00</h3>
                 <input type="number" class="quantity" min="0" value="0">
                 <button class="add-button">Add to Cart</button>
             </div>
             <div class="food-item">
                 <img src="https://media.istockphoto.com/id/1442417585/photo/person-getting-a-piece-of-cheesy-pepperoni-pizza.jpg?s=612x612&w=0&k=20&c=k60TjxKIOIxJpd4F4yLMVjsniB4W1BpEV4Mi_nb4uJU=" alt="Pizza" class="food-image">
-                <h3>Pizza - ₹349.00</h3>
+                <h3>Pizza - $8.00</h3>
                 <input type="number" class="quantity" min="0" value="0">
                 <button class="add-button">Add to Cart</button>
             </div>
             <div class="food-item">
                 <img src="https://cdn.jwplayer.com/v2/media/wGEqBtuf/thumbnails/qSXwlEH3.jpg" alt="Salad" class="food-image">
-                <h3>Salad - ₹149.00</h3>
+                <h3>Salad - $4.00</h3>
                 <input type="number" class="quantity" min="0" value="0">
                 <button class="add-button">Add to Cart</button>
             </div>
             <div class="food-item">
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6iY5e0G6cWFIFK8U4nZBatA_exEcZ3NU9Ew" alt="Sushi" class="food-image">
-                <h3>Sushi - ₹199.00</h3>
+                <h3>Sushi - $12.00</h3>
                 <input type="number" class="quantity" min="0" value="0">
                 <button class="add-button">Add to Cart</button>
             </div>
             <div class="food-item">
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIzs1SU-LFa0rX5q5zZDN4B40Ef7xcGyA6Cw" alt="Tacos" class="food-image">
-                <h3>Tacos - ₹180.00</h3>
+                <h3>Tacos - $7.00</h3>
                 <input type="number" class="quantity" min="0" value="0">
                 <button class="add-button">Add to Cart</button>
             </div>
             <div class="food-item">
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJVGbI4pBbCqLyqDe64U1LGqBn9lP6aRMeaQ" alt="Ice Cream" class="food-image">
-                <h3>Ice Cream - ₹300.00</h3>
+                <h3>Ice Cream - $3.00</h3>
                 <input type="number" class="quantity" min="0" value="0">
                 <button class="add-button">Add to Cart</button>
             </div>
@@ -148,7 +148,7 @@ button:hover {
         <div class="cart">
             <h2>Cart</h2>
             <ul id="cart-items"></ul>
-            <p id="total">Total: ₹0.00</p>
+            <p id="total">Total: $0.00</p>
             <input type="text" class="address" placeholder="Enter delivery address" id="address-input" required>
             <button id="checkout-button">Checkout</button>
         </div>
@@ -169,11 +169,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (quantity > 0) {
                 const listItem = document.createElement("li");
-                listItem.textContent = `₹{name} (x${quantity}) - ₹{(price * quantity).toFixed(2)}`;
+                listItem.textContent = `${name} (x${quantity}) - $${(price * quantity).toFixed(2)}`;
                 cartItems.appendChild(listItem);
 
                 total += price * quantity;
-                totalDisplay.textContent = `Total: ₹₹{total.toFixed(2)}`;
+                totalDisplay.textContent = `Total: $${total.toFixed(2)}`;
                 foodItem.querySelector(".quantity").value = 0; // Reset quantity input
             }
         });
@@ -182,10 +182,10 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("checkout-button").addEventListener("click", () => {
         const address = addressInput.value;
         if (address) {
-            alert(`Thank you for your order! Total: ₹₹{total.toFixed(2)}\nDelivery Address: ₹{address}`);
+            alert(`Thank you for your order! Total: $${total.toFixed(2)}\nDelivery Address: ${address}`);
             cartItems.innerHTML = "";
             total = 0;
-            totalDisplay.textContent = `Total: ₹0.00`;
+            totalDisplay.textContent = `Total: $0.00`;
             addressInput.value = ""; // Reset address input
         } else {
             alert("Please enter a delivery address.");
