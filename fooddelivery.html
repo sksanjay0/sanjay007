@@ -7,99 +7,92 @@
     <title>Food Delivery App</title>
 </head>
 <style>
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
-    background-color: #f8f9fa; /* Light gray background */
-}
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f8f9fa;
+    }
 
-header {
-    text-align: center;
-    margin-bottom: 20px;
-    background-color: #007bff; /* Bootstrap primary color */
-    color: white; /* White text */
-    padding: 10px 0; /* Padding for spacing */
-    border-radius: 5px; /* Rounded corners */
-}
+    header {
+        text-align: center;
+        margin-bottom: 20px;
+        background-color: #007bff;
+        color: white;
+        padding: 10px 0;
+        border-radius: 5px;
+    }
 
-.menu, .cart {
-    border: 1px solid #ced4da; /* Light gray border */
-    padding: 15px;
-    margin-bottom: 20px;
-    background-color: white; /* White background */
-    border-radius: 5px; /* Rounded corners */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-}
+    .menu, .cart {
+        border: 1px solid #ced4da;
+        padding: 15px;
+        margin-bottom: 20px;
+        background-color: white;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
 
-.food-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-    padding: 10px;
-    background-color: #e9ecef; /* Light background for food items */
-    border-radius: 5px; /* Rounded corners */
-    transition: background-color 0.3s; /* Smooth transition */
-}
+    .food-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        padding: 10px;
+        background-color: #e9ecef;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
 
-.food-item:hover {
-    background-color: #d1e7dd; /* Light green on hover */
-}
+    .food-item:hover {
+        background-color: #d1e7dd;
+    }
 
-.food-image {
-    width: 60px; /* Slightly larger images */
-    height: 60px;
-    margin-right: 10px;
-    border-radius: 5px; /* Rounded corners */
-}
+    .food-image {
+        width: 60px;
+        height: 60px;
+        margin-right: 10px;
+        border-radius: 5px;
+    }
 
-input.quantity {
-    width: 50px;
-    margin-right: 10px;
-    border: 1px solid #6c757d; /* Darker gray border */
-    border-radius: 5px; /* Rounded corners */
-}
+    input, select {
+        width: 100%;
+        margin-top: 10px;
+        padding: 8px;
+        border: 1px solid #6c757d;
+        border-radius: 5px;
+    }
 
-input.address {
-    width: 100%;
-    margin-top: 10px;
-    padding: 8px;
-    border: 1px solid #6c757d; /* Darker gray border */
-    border-radius: 5px; /* Rounded corners */
-}
+    button {
+        padding: 8px 12px;
+        cursor: pointer;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
 
-button {
-    padding: 8px 12px;
-    cursor: pointer;
-    background-color: #28a745; /* Bootstrap success color */
-    color: white; /* White text */
-    border: none; /* No border */
-    border-radius: 5px; /* Rounded corners */
-    transition: background-color 0.3s; /* Smooth transition */
-}
+    button:hover {
+        background-color: #218838;
+    }
 
-button:hover {
-    background-color: #218838; /* Darker green on hover */
-}
+    .cart {
+        background-color: #fff3cd;
+    }
 
-.cart {
-    background-color: #fff3cd; /* Light yellow background for cart */
-}
+    #checkout-button {
+        background-color: #ffc107;
+        color: black;
+    }
 
-#checkout-button {
-    background-color: #ffc107; /* Bootstrap warning color */
-    color: black; /* Black text */
-}
+    #checkout-button:hover {
+        background-color: #e0a800;
+    }
 
-#checkout-button:hover {
-    background-color: #e0a800; /* Darker yellow on hover */
-}
-
-#total {
-    font-weight: bold; /* Bold text for total */
-    font-size: 1.2em; /* Slightly larger font size */
-    color: #dc3545; /* Bootstrap danger color for emphasis */
-}
+    #total {
+        font-weight: bold;
+        font-size: 1.2em;
+        color: #dc3545;
+    }
 </style>
 <body>
     <header>
@@ -110,37 +103,37 @@ button:hover {
             <h2>Menu</h2>
             <div class="food-item">
                 <img src="https://img.freepik.com/free-photo/delicious-burger-with-fresh-ingredients_23-2150857908.jpg" alt="Burger" class="food-image">
-                <h3>Burger - $5.00</h3>
+                <h3>Burger - ₹415</h3>
                 <input type="number" class="quantity" min="0" value="0">
                 <button class="add-button">Add to Cart</button>
             </div>
             <div class="food-item">
                 <img src="https://media.istockphoto.com/id/1442417585/photo/person-getting-a-piece-of-cheesy-pepperoni-pizza.jpg?s=612x612&w=0&k=20&c=k60TjxKIOIxJpd4F4yLMVjsniB4W1BpEV4Mi_nb4uJU=" alt="Pizza" class="food-image">
-                <h3>Pizza - $8.00</h3>
+                <h3>Pizza - ₹664</h3>
                 <input type="number" class="quantity" min="0" value="0">
                 <button class="add-button">Add to Cart</button>
             </div>
             <div class="food-item">
                 <img src="https://cdn.jwplayer.com/v2/media/wGEqBtuf/thumbnails/qSXwlEH3.jpg" alt="Salad" class="food-image">
-                <h3>Salad - $4.00</h3>
+                <h3>Salad - ₹332</h3>
                 <input type="number" class="quantity" min="0" value="0">
                 <button class="add-button">Add to Cart</button>
             </div>
             <div class="food-item">
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6iY5e0G6cWFIFK8U4nZBatA_exEcZ3NU9Ew" alt="Sushi" class="food-image">
-                <h3>Sushi - $12.00</h3>
+                <h3>Sushi - ₹996</h3>
                 <input type="number" class="quantity" min="0" value="0">
                 <button class="add-button">Add to Cart</button>
             </div>
             <div class="food-item">
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIzs1SU-LFa0rX5q5zZDN4B40Ef7xcGyA6Cw" alt="Tacos" class="food-image">
-                <h3>Tacos - $7.00</h3>
+                <h3>Tacos - ₹581</h3>
                 <input type="number" class="quantity" min="0" value="0">
                 <button class="add-button">Add to Cart</button>
             </div>
             <div class="food-item">
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJVGbI4pBbCqLyqDe64U1LGqBn9lP6aRMeaQ" alt="Ice Cream" class="food-image">
-                <h3>Ice Cream - $3.00</h3>
+                <h3>Ice Cream - ₹249</h3>
                 <input type="number" class="quantity" min="0" value="0">
                 <button class="add-button">Add to Cart</button>
             </div>
@@ -148,8 +141,18 @@ button:hover {
         <div class="cart">
             <h2>Cart</h2>
             <ul id="cart-items"></ul>
-            <p id="total">Total: $0.00</p>
-            <input type="text" class="address" placeholder="Enter delivery address" id="address-input" required>
+            <p id="total">Total: ₹0.00</p>
+            <input type="text" class="name" placeholder="Enter your name" id="name-input" required>
+            <input type="text" class="street" placeholder="Enter street" id="street-input" required>
+            <input type="text" class="city" placeholder="Enter city" id="city-input" required>
+            <input type="text" class="district" placeholder="Enter district" id="district-input" required>
+            <input type="text" class="pincode" placeholder="Enter pincode" id="pincode-input" required>
+            <select class="payment" id="payment-select" required>
+                <option value="">Select Payment Method</option>
+                <option value="Credit Card">Credit Card</option>
+                <option value="Cash on Delivery">Cash on Delivery</option>
+                <option value="UPI">UPI</option>
+            </select>
             <button id="checkout-button">Checkout</button>
         </div>
     </main>
@@ -157,38 +160,55 @@ button:hover {
 document.addEventListener("DOMContentLoaded", () => {
     const cartItems = document.getElementById("cart-items");
     const totalDisplay = document.getElementById("total");
-    const addressInput = document.getElementById("address-input");
+    const nameInput = document.getElementById("name-input");
+    const streetInput = document.getElementById("street-input");
+    const cityInput = document.getElementById("city-input");
+    const districtInput = document.getElementById("district-input");
+    const pincodeInput = document.getElementById("pincode-input");
+    const paymentSelect = document.getElementById("payment-select");
     let total = 0;
 
     document.querySelectorAll(".add-button").forEach(button => {
         button.addEventListener("click", () => {
             const foodItem = button.parentElement;
             const name = foodItem.querySelector("h3").textContent.split(" - ")[0];
-            const price = parseFloat(foodItem.querySelector("h3").textContent.split("$")[1]);
+            const price = parseFloat(foodItem.querySelector("h3").textContent.split("₹")[1]);
             const quantity = parseInt(foodItem.querySelector(".quantity").value);
 
             if (quantity > 0) {
                 const listItem = document.createElement("li");
-                listItem.textContent = `${name} (x${quantity}) - $${(price * quantity).toFixed(2)}`;
+                listItem.textContent = `${name} (x${quantity}) - ₹${(price * quantity).toFixed(2)}`;
                 cartItems.appendChild(listItem);
 
                 total += price * quantity;
-                totalDisplay.textContent = `Total: $${total.toFixed(2)}`;
+                totalDisplay.textContent = `Total: ₹${total.toFixed(2)}`;
                 foodItem.querySelector(".quantity").value = 0; // Reset quantity input
             }
         });
     });
 
     document.getElementById("checkout-button").addEventListener("click", () => {
-        const address = addressInput.value;
-        if (address) {
-            alert(`Thank you for your order! Total: $${total.toFixed(2)}\nDelivery Address: ${address}`);
+        const name = nameInput.value;
+        const street = streetInput.value;
+        const city = cityInput.value;
+        const district = districtInput.value;
+        const pincode = pincodeInput.value;
+        const paymentMethod = paymentSelect.value;
+
+        if (name && street && city && district && pincode && paymentMethod) {
+            const address = `${name}, ${street}, ${city}, ${district} - ${pincode}`;
+            alert(`Thank you for your order!\nTotal: ₹${total.toFixed(2)}\nDelivery Address: ${address}\nPayment Method: ${paymentMethod}`);
             cartItems.innerHTML = "";
             total = 0;
-            totalDisplay.textContent = `Total: $0.00`;
-            addressInput.value = ""; // Reset address input
+            totalDisplay.textContent = `Total: ₹0.00`;
+            nameInput.value = ""; // Reset inputs
+            streetInput.value = "";
+            cityInput.value = "";
+            districtInput.value = "";
+            pincodeInput.value = "";
+            paymentSelect.value = ""; // Reset payment method
         } else {
-            alert("Please enter a delivery address.");
+            alert("Please fill in all fields and select a payment method.");
         }
     });
 });
