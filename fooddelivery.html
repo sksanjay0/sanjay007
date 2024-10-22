@@ -144,7 +144,6 @@
             <p id="total">Total: ₹0.00</p>
             <input type="text" class="name" placeholder="Enter your name" id="name-input" required>
             <input type="text" class="street" placeholder="Enter street" id="street-input" required>
-            <input type="text" class="city" placeholder="Enter city" id="city-input" required>
             <input type="text" class="district" placeholder="Enter district" id="district-input" required>
             <input type="text" class="pincode" placeholder="Enter pincode" id="pincode-input" required>
             <select class="payment" id="payment-select" required>
@@ -162,7 +161,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const totalDisplay = document.getElementById("total");
     const nameInput = document.getElementById("name-input");
     const streetInput = document.getElementById("street-input");
-    const cityInput = document.getElementById("city-input");
     const districtInput = document.getElementById("district-input");
     const pincodeInput = document.getElementById("pincode-input");
     const paymentSelect = document.getElementById("payment-select");
@@ -190,20 +188,18 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("checkout-button").addEventListener("click", () => {
         const name = nameInput.value;
         const street = streetInput.value;
-        const city = cityInput.value;
         const district = districtInput.value;
         const pincode = pincodeInput.value;
         const paymentMethod = paymentSelect.value;
 
         if (name && street && city && district && pincode && paymentMethod) {
-            const address = `${name}, ${street}, ${city}, ${district} - ${pincode}`;
+            const address = `${name}, ${street}, ${district} - ${pincode}`;
             alert(`Thank you for your order!\nTotal: ₹${total.toFixed(2)}\nDelivery Address: ${address}\nPayment Method: ${paymentMethod}`);
             cartItems.innerHTML = "";
             total = 0;
             totalDisplay.textContent = `Total: ₹0.00`;
             nameInput.value = ""; // Reset inputs
             streetInput.value = "";
-            cityInput.value = "";
             districtInput.value = "";
             pincodeInput.value = "";
             paymentSelect.value = ""; // Reset payment method
