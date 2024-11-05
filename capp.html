@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classifieds - Buy and Sell Used Products</title>
+    <style>
+        /* Reset some default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .search-bar {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .search-bar input {
+            width: 300px;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .product-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .product-item {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            width: 250px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .product-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .product-item h3 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .product-item p {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .product-item .price {
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 10px;
+        }
+
+        .add-product-btn,
+        .edit-product-btn {
+            display: block;
+            margin: 30px auto;
+            padding: 10px 20px;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .add-product-btn:hover,
+        .edit-product-btn:hover {
+            background-color: #2ecc71;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 5px;
+            width: 300px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-content input,
+        .modal-content textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 14px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .modal-content button {
+            width: 100%;
+            padding: 10px;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .modal-content button:hover {
+            background-color: #2ecc71;
+        }
+
+        .close-btn {
+            font-size: 30px;
+            color: #333;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+        }
+
+        .delete-btn {
+            color: red;
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        .buy-btn {
+            display: block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .buy-btn:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+
+        .address-modal .modal-content {
+            width: 400px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Classifieds: Buy and Sell Used Products</h1>
+    </header>
+
+    <div class="content">
+        <!-- Product Search -->
+        <div class="search-bar">
+            <input type="text" id="search" placeholder="Search for products..." onkeyup="searchProducts()">
+        </div>
+
+        <!-- Product List -->
+        <div class="product-list" id="product-list">
+            <!-- Product items will appear here -->
+        </div>
+
+        <!-- Add Product Modal -->
+        <div id="add-product-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="closeModal()">×</span>
+                <h2>Add New Product</h2>
+                <form id="add-product-form">
+                    <label for="product-title">Title:</label>
+                    <input type="text" id="product-title" name="product-title" required>
+
+                    <label for="product-description">Description:</label>
+                    <textarea id="product-description" name="product-description" required></textarea>
+
+                    <label for="product-price">Price:</label>
+                    <input type="number" id="product-price" name="product-price" required>
+
+                    <label for="product-image">Image URL:</label>
+                    <input type="text" id="product-image" name="product-image">
+
+                    <button type="submit">Add Product</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Edit Product Modal -->
+        <div id="edit-product-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="closeEditModal()">×</span>
+                <h2>Edit Product</h2>
+                <form id="edit-product-form">
+                    <input type="hidden" id="edit-product-id">
+
+                    <label for="edit-product-title">Title:</label>
+                    <input type="text" id="edit-product-title" name="product-title" required>
+
+                    <label for="edit-product-description">Description:</label>
+                    <textarea id="edit-product-description" name="product-description" required></textarea>
+
+                    <label for="edit-product-price">Price:</label>
+                    <input type="number" id="edit-product-price" name="product-price" required>
+
+                    <label for="edit-product-image">Image URL:</label>
+                    <input type="text" id="edit-product-image" name="product-image">
+
+                    <button type="submit">Save Changes</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Address Modal -->
+        <div id="address-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="closeAddressModal()">×</span>
+                <h2>Enter Shipping Address</h2>
+                <form id="address-form">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+
+                    <label for="address">Address:</label>
+                    <textarea id="address" name="address" required></textarea>
+
+                    <label for="phone">Phone:</label>
+                    <input type="tel" id="phone" name="phone" required>
+
+                    <button type="submit">Submit Address</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Add Product Button -->
+        <button class="add-product-btn" onclick="openModal()">+ Add Product</button>
+    </div>
+
+    <script>
+        // Function to get products from localStorage
+        function getProducts() {
+            const storedProducts = localStorage.getItem('products');
+            return storedProducts ? JSON.parse(storedProducts) : [];
+        }
+
+        // Function to save products to localStorage
+        function saveProducts(products) {
+            localStorage.setItem('products', JSON.stringify(products));
+        }
+
+        // Initial products (if any saved in localStorage)
+        let products = getProducts();
+
+        // Function to format the price in INR
+        function formatINR(price) {
+            return new Intl.NumberFormat('en-IN', {
+                style: 'currency',
+                currency: 'INR',
+            }).format(price * 83); // Assuming 1 USD = 83 INR
+        }
+
+        // Function to display products
+        function displayProducts(filteredProducts) {
+            const productList = document.getElementById("product-list");
+            productList.innerHTML = ""; // Clear existing products
+
+            filteredProducts.forEach(product => {
+                const productItem = document.createElement("div");
+                productItem.className = "product-item";
+                productItem.innerHTML = `
+                    <img src="${product.image || 'https://via.placeholder.com/250x150?text=No+Image+Available'}" alt="${product.title}">
+                    <h3>${product.title}</h3>
+                    <p>${product.description}</p>
+                    <div class="price">${formatINR(product.price)}</div>
+                    <button class="buy-btn" onclick="buyProduct(${product.id})" ${product.available ? '' : 'disabled'}>${product.available ? 'Buy' : 'Sold'}</button>
+                    <span class="delete-btn" onclick="deleteProduct(${product.id})">Delete</span>
+                    <button class="edit-product-btn" onclick="openEditModal(${product.id})">Edit</button>
+                `;
+                productList.appendChild(productItem);
+            });
+        }
+
+        // Function to open the "Add Product" modal
+        function openModal() {
+            document.getElementById("add-product-modal").style.display = "flex";
+        }
+
+        // Function to close the "Add Product" modal
+        function closeModal() {
+            document.getElementById("add-product-modal").style.display = "none";
+        }
+
+        // Function to open the "Edit Product" modal
+        function openEditModal(productId) {
+            const product = products.find(product => product.id === productId);
+
+            document.getElementById("edit-product-id").value = product.id;
+            document.getElementById("edit-product-title").value = product.title;
+            document.getElementById("edit-product-description").value = product.description;
+            document.getElementById("edit-product-price").value = product.price;
+            document.getElementById("edit-product-image").value = product.image;
+
+            document.getElementById("edit-product-modal").style.display = "flex";
+        }
+
+        // Function to close the "Edit Product" modal
+        function closeEditModal() {
+            document.getElementById("edit-product-modal").style.display = "none";
+        }
+
+        // Handle form submission to add a new product
+        document.getElementById("add-product-form").addEventListener("submit", function(e) {
+            e.preventDefault();
+
+            const title = document.getElementById("product-title").value;
+            const description = document.getElementById("product-description").value;
+            const price = parseFloat(document.getElementById("product-price").value);
+            const image = document.getElementById("product-image").value || 'https://via.placeholder.com/250x150?text=No+Image+Available';
+
+            const newProduct = {
+                id: Date.now(),
+                title,
+                description,
+                price,
+                available: true,
+                image,
+                address: null
+            };
+
+            products.push(newProduct);
+            saveProducts(products);
+            closeModal();
+            this.reset();
+            displayProducts(products);
+        });
+
+        // Handle form submission to edit an existing product
+        document.getElementById("edit-product-form").addEventListener("submit", function(e) {
+            e.preventDefault();
+
+            const productId = document.getElementById("edit-product-id").value;
+            const title = document.getElementById("edit-product-title").value;
+            const description = document.getElementById("edit-product-description").value;
+            const price = parseFloat(document.getElementById("edit-product-price").value);
+            const image = document.getElementById("edit-product-image").value;
+
+            const product = products.find(product => product.id === parseInt(productId));
+            if (product) {
+                product.title = title;
+                product.description = description;
+                product.price = price;
+                product.image = image || 'https://via.placeholder.com/250x150?text=No+Image+Available';
+            }
+
+            saveProducts(products);
+            closeEditModal();
+            displayProducts(products);
+        });
+
+        // Function to simulate the buying process
+        function buyProduct(productId) {
+            const product = products.find(product => product.id === productId);
+            if (product && product.available) {
+                product.available = false;
+                openAddressModal(productId);
+            }
+        }
+
+        // Function to open the "Address Modal"
+        function openAddressModal(productId) {
+            document.getElementById("address-form").onsubmit = function(e) {
+                e.preventDefault();
+                saveAddress(productId);
+            };
+            document.getElementById("address-modal").style.display = "flex";
+        }
+
+        // Function to close the "Address Modal"
+        function closeAddressModal() {
+            document.getElementById("address-modal").style.display = "none";
+        }
+
+        // Function to save the address when a product is bought
+        function saveAddress(productId) {
+            const product = products.find(product => product.id === productId);
+            if (product) {
+                const name = document.getElementById("name").value;
+                const address = document.getElementById("address").value;
+                const phone = document.getElementById("phone").value;
+
+                product.address = { name, address, phone };
+                saveProducts(products);
+
+                closeAddressModal();
+                displayProducts(products);
+                alert(`You have successfully purchased "${product.title}"! It will be delivered to: ${name}`);
+            }
+        }
+
+        // Function to delete a product
+        function deleteProduct(productId) {
+            products = products.filter(product => product.id !== productId);
+            saveProducts(products);
+            displayProducts(products);
+        }
+
+        // Function to search/filter products by title
+        function searchProducts() {
+            const searchQuery = document.getElementById("search").value.toLowerCase();
+            const filteredProducts = products.filter(product =>
+                product.title.toLowerCase().includes(searchQuery)
+            );
+            displayProducts(filteredProducts);
+        }
+
+        // Display the initial products from localStorage
+        displayProducts(products);
+    </script>
+
+</body>
+</html>
